@@ -1,5 +1,26 @@
 // TODO: Declare any global variables we need
+const headsCounterOnPage = document.getElementById('heads')
+const tailsCounterOnPage = document.getElementById('tails')
 
+let totalHeads = 0
+let totalTails = 0
+let totalFlipped = totalHeads + totalTails // OR 0 and increment by one every time
+let tailsPercentage = 0
+let headsPercentage = 0
+let totalPercentage = 0
+/*let images = ['./assets/images/penny-heads.jpg','./assets/images/penny-tails.jpg']*/
+let images = [{
+    imagePath: "./assets/images/penny-heads.jpg",
+    message: "You flipped heads!",
+    side: "heads",
+},
+{
+    imagePath: "./assets/images/penny-tails.jpg",
+    message: "You flipped tails!",
+    side: "tails"
+}]
+
+let defaultMessage = "Let's Get Rolling!"
 
 document.addEventListener('DOMContentLoaded', function () {
     // This is just a sanity check to make sure your JavaScript script is getting loaded
@@ -7,21 +28,43 @@ document.addEventListener('DOMContentLoaded', function () {
     console.log('Hi')
 
     // TODO: Add event listener and handler for flip and clear buttons
+    document.getElementById('flip').addEventListener('click', function() {
+        let randomImage = images[Math.floor(Math.random()* images.length)];
+        document.querySelector("#image").setAttribute("src", randomImage.imagePath)
 
-    // Flip Button Click Handler
-        // TODO: Determine flip outcome
-        // TODO: Update image and status message in the DOM
+        if(randomImage.side === "heads") {
+            totalHeads++
+            totalFlipped++
+            document.getElementById('heads').textContent = totalHeads
+            document.querySelector('.message-container').textContent = randomImage.message
+        } else {
+            if(randomImage.side === "tails") {
+                totalTails++
+                totalFlipped++
+                document.getElementById('tails').textContent = totalTails
+                document.querySelector('.message-container').textContent = randomImage.message
+            }
+        }
 
-        // Update the scorboard
-        // TODO: Calculate the total number of rolls/flips
-        // Make variables to track the percentages of heads and tails
-        // TODO: Use the calculated total to calculate the percentages
-        // HINT: Make sure not to divide by 0! (if total is 0, percent will be 0 as well)
-        // TODO: Update the display of each table cell
+        headsPercentage = Math.round((totalHeads * 100) / totalFlipped)
+        tailsPercentage = Math.round((totalTails * 100) / totalFlipped)
 
+        document.getElementById('heads-percent').textContent = headsPercentage + '%'
+        document.getElementById('tails-percent').textContent = tailsPercentage + '%'
+    })
 
-    // Clear Button Click Handler
-        // TODO: Reset global variables to 0
-        // TODO: Update the scoreboard (same logic as in flip button click handler)
+        document.getElementById("clear").addEventListener("click", function() {
+            totalHeads = 0
+            totalTails = 0
+            headsPercentage = 0 + "%"
+            tailsPercentage = 0 + "%"
+            totalFlipped = 0
+
+            document.getElementById("heads").textContent = totalHeads
+            document.getElementById("tails").textContent = totalTails
+            document.getElementById("tails-percent").textContent = tailsPercentage
+            document.getElementById("heads-percent").textContent = headsPercentage
+            document.querySelector('.message-container').textContent = defaultMessage
+        })
 
 })
